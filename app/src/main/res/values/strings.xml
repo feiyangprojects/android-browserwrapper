@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Browser Wrapper</string>
+    <string name="app_name" translatable="false">Browser Wrapper</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="set_browser">Set Browser</string>
+    <string name="set_browser_description">Set the browser that will be called by open actions.</string>
+    <string name="preferences" translatable="false">preferences</string>
 </resources>
