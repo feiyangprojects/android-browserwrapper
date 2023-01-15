@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name" translatable="false">Browser Wrapper</string>
     <string name="cancel">Cancel</string>
+    <string name="copy">Copy</string>
+    <string name="open">Open</string>
+    <string name="open_it">Open It?</string>
+    <string name="open_in_incognito">Open in Incognito?</string>
     <string name="save">Save</string>
     <string name="set_browser">Set Browser</string>
     <string name="set_browser_description">Set the browser that will be called by open actions.</string>
