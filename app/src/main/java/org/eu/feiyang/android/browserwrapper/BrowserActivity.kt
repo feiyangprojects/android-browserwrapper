@@ -25,7 +25,8 @@ class BrowserActivity : ComponentActivity() {
         setContent {
             BrowserWrapperTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background.copy(alpha = 0f),
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     BrowserContent(preferences = preferences)
                 }
