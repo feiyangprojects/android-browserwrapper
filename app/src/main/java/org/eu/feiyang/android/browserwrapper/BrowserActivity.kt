@@ -56,12 +56,13 @@ fun BrowserContent(preferences: SharedPreferences) {
                     .fillMaxWidth()
                     .toggleable(value = incognito, onValueChange = { incognito = it })
             ) {
-                Checkbox(checked = incognito, onCheckedChange = { incognito = it })
                 Text(
                     text = stringResource(id = R.string.open_in_incognito),
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
+                Spacer(modifier = Modifier.weight(1f))
+                Checkbox(checked = incognito, onCheckedChange = { incognito = it })
             }
         }
 
