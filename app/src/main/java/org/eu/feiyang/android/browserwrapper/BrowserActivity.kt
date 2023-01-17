@@ -7,19 +7,21 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.eu.feiyang.android.browserwrapper.ui.theme.BrowserWrapperTheme
-import org.eu.feiyang.android.browserwrapper.util.BROWSER_COMPONENT
 import org.eu.feiyang.android.browserwrapper.util.findActivity
 
 class BrowserActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val preferences = getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
+        val preferences =
+            getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
 
         super.onCreate(savedInstanceState)
         setContent {
@@ -41,7 +43,12 @@ fun BrowserContent(preferences: SharedPreferences) {
     val clipboard =
         LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-    var incognito by remember { mutableStateOf(true) }
+    val defaultBrowser = stringResource(id = R.string.preference_browser_default)
+    val preferenceBrowser = stringResource(id = R.string.preference_browser)
+
+    val customtabs = stringResource(id = R.string.intent_customtabs)
+    val incognito = remember { mutableStateOf(true) }
+    val incognitoExtra = stringResource(id = R.string.intent_customtabs_incognito)
 
     AlertDialog(onDismissRequest = {
         activity.finish()
@@ -54,7 +61,7 @@ fun BrowserContent(preferences: SharedPreferences) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .toggleable(value = incognito, onValueChange = { incognito = it })
+                    .toggleable(value = incognito.value, onValueChange = { incognito.value = it })
             ) {
                 Text(
                     text = stringResource(id = R.string.open_in_incognito),
@@ -62,7 +69,7 @@ fun BrowserContent(preferences: SharedPreferences) {
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Checkbox(checked = incognito, onCheckedChange = { incognito = it })
+                Checkbox(checked = incognito.value, onCheckedChange = { incognito.value = it })
             }
         }
 
@@ -74,17 +81,15 @@ fun BrowserContent(preferences: SharedPreferences) {
             val intent = Intent().apply {
                 action = Intent.ACTION_VIEW
                 component = ComponentName.unflattenFromString(
-                    preferences.getString("browser", null) ?: BROWSER_COMPONENT
+                    preferences.getString(preferenceBrowser, defaultBrowser)!!
                 )
                 // See L52
                 data = activity.intent.data
-                putExtra("android.support.customtabs.extra.SESSION", session)
+                putExtra(customtabs, session)
             }
 
-            if (incognito) {
-                intent.putExtra(
-                    "com.google.android.apps.chrome.EXTRA_OPEN_NEW_INCOGNITO_TAB", true
-                )
+            if (incognito.value) {
+                intent.putExtra(incognitoExtra, true)
             }
             activity.startActivity(intent)
             activity.finish()
