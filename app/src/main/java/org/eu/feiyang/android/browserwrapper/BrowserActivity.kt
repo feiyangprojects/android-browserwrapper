@@ -43,12 +43,18 @@ fun BrowserContent(preferences: SharedPreferences) {
     val clipboard =
         LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-    val defaultBrowser = stringResource(id = R.string.preference_browser_default)
     val preferenceBrowser = stringResource(id = R.string.preference_browser)
+    val defaultBrowser = stringResource(id = R.string.preference_browser_default)
+    val currentBrowser = preferences.getString(preferenceBrowser, defaultBrowser)!!
 
     val customtabs = stringResource(id = R.string.intent_customtabs)
-    val incognito = remember { mutableStateOf(true) }
-    val incognitoExtra = stringResource(id = R.string.intent_customtabs_incognito)
+    val customtabsIncognito = remember { mutableStateOf(true) }
+    val customtabsIncognitoExtra = stringResource(id = R.string.intent_customtabs_incognito)
+    var customtabsIncognitoSupported = true
+    if (!currentBrowser.endsWith(stringResource(id = R.string.intent_customtabs_incognito_suffix_chromium))) {
+        customtabsIncognito.value = false
+        customtabsIncognitoSupported = false
+    }
 
     AlertDialog(onDismissRequest = {
         activity.finish()
@@ -61,7 +67,9 @@ fun BrowserContent(preferences: SharedPreferences) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .toggleable(value = incognito.value, onValueChange = { incognito.value = it })
+                    .toggleable(value = customtabsIncognito.value,
+                        enabled = customtabsIncognitoSupported,
+                        onValueChange = { customtabsIncognito.value = it })
             ) {
                 Text(
                     text = stringResource(id = R.string.open_in_incognito),
@@ -69,7 +77,9 @@ fun BrowserContent(preferences: SharedPreferences) {
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Checkbox(checked = incognito.value, onCheckedChange = { incognito.value = it })
+                Checkbox(checked = customtabsIncognito.value,
+                    enabled = customtabsIncognitoSupported,
+                    onCheckedChange = { customtabsIncognito.value = it })
             }
         }
 
@@ -88,8 +98,8 @@ fun BrowserContent(preferences: SharedPreferences) {
                 putExtra(customtabs, session)
             }
 
-            if (incognito.value) {
-                intent.putExtra(incognitoExtra, true)
+            if (customtabsIncognito.value) {
+                intent.putExtra(customtabsIncognitoExtra, true)
             }
             activity.startActivity(intent)
             activity.finish()

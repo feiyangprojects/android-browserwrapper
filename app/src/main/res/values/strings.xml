@@ -4,6 +4,7 @@
     <string name="copy">Copy</string>
     <string name="intent_customtabs" translatable="false">android.support.customtabs.extra.SESSION</string>
     <string name="intent_customtabs_incognito" translatable="false">com.google.android.apps.chrome.EXTRA_OPEN_NEW_INCOGNITO_TAB</string>
+    <string name="intent_customtabs_incognito_suffix_chromium" translatable="false">/com.google.android.apps.chrome.IntentDispatcher</string>
     <string name="open">Open</string>
     <string name="open_it">Open It?</string>
     <string name="open_in_incognito">Open in Incognito?</string>
