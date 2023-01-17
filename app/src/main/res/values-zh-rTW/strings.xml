@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel">取消</string>
+    <string name="copy">複製</string>
+    <string name="open">開啟</string>
+    <string name="open_it">開啟它嗎？</string>
+    <string name="open_in_incognito">使用無痕模式嗎？</string>
+    <string name="save">儲存</string>
+    <string name="set_browser">設定瀏覽器</string>
+    <string name="set_browser_description">設定用於開啟動作的瀏覽器</string>
+</resources>
