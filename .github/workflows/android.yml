@@ -1,0 +1,42 @@
+name: Android CI
+
+on:
+  push:
+    tags:
+      - "**"
+  pull_request:
+    tags:
+      - "**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Build application
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug assembleRelease
+      - name: Upload debug build
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug
+          path: app/build/outputs/apk/debug/**/*.apk
+      - name: Upload release build
+        uses: actions/upload-artifact@v3
+        with:
+          name: release
+          path: app/build/outputs/apk/release/**/*.apk
+      - name: Publish release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          cd app/build/outputs/apk/release
+          gh release create --title "Release ${{ github.ref_name }}" "${{ github.ref_name }}" "app-release-unsigned.apk"
