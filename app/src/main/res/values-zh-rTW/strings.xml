@@ -8,4 +8,6 @@
     <string name="save">儲存</string>
     <string name="set_browser">設定瀏覽器</string>
     <string name="set_browser_description">設定用於開啟動作的瀏覽器</string>
+    <string name="error">错误</string>
+    <string name="error_null_activity">无法在上下文中找到当前的活动，请停止此应用程序并重试。</string>
 </resources>

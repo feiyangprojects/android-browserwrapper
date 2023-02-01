@@ -8,4 +8,6 @@
     <string name="save">保存</string>
     <string name="set_browser">设置浏览器</string>
     <string name="set_browser_description">设置用于打开操作的浏览器</string>
+    <string name="error">錯誤</string>
+    <string name="error_null_activity">在內容中找不到目前的活動，請停止此應用程式並重試。</string>
 </resources>
