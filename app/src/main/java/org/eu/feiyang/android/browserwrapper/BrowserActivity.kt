@@ -1,5 +1,6 @@
 package org.eu.feiyang.android.browserwrapper
 
+import android.app.Activity
 import android.content.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,19 +45,48 @@ fun BrowserContent(preferences: SharedPreferences) {
     val clipboard =
         LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-    val preferenceBrowser = stringResource(id = R.string.preference_browser)
-    val defaultBrowser = stringResource(id = R.string.preference_browser_default)
-    val currentBrowser = preferences.getString(preferenceBrowser, defaultBrowser)!!
+    if (activity !== null) {
+        val preferenceBrowser = stringResource(id = R.string.preference_browser)
+        val defaultBrowser = stringResource(id = R.string.preference_browser_default)
+        val currentBrowser = preferences.getString(preferenceBrowser, defaultBrowser)!!
 
-    val customtabs = stringResource(id = R.string.intent_customtabs)
-    val customtabsIncognito = remember { mutableStateOf(true) }
-    val customtabsIncognitoExtra = stringResource(id = R.string.intent_customtabs_incognito)
-    var customtabsIncognitoSupported = true
-    if (!currentBrowser.endsWith(stringResource(id = R.string.intent_customtabs_incognito_suffix_chromium))) {
-        customtabsIncognito.value = false
-        customtabsIncognitoSupported = false
+        val customtabs = stringResource(id = R.string.intent_customtabs)
+        val customtabsIncognito = remember { mutableStateOf(true) }
+        val customtabsIncognitoExtra = stringResource(id = R.string.intent_customtabs_incognito)
+        var customtabsIncognitoSupported = true
+        if (!currentBrowser.endsWith(stringResource(id = R.string.intent_customtabs_incognito_suffix_chromium))) {
+            customtabsIncognito.value = false
+            customtabsIncognitoSupported = false
+        }
+
+        BrowserAlertDialog(
+            activity = activity,
+            clipboard = clipboard,
+            preferences = preferences,
+            customtabs = customtabs,
+            customtabsIncognito = customtabsIncognito,
+            customtabsIncognitoExtra = customtabsIncognitoExtra,
+            customtabsIncognitoSupported = customtabsIncognitoSupported,
+            defaultBrowser = defaultBrowser,
+            preferenceBrowser = preferenceBrowser
+        )
+    } else {
+        BrowserNullActivityAlertDialog()
     }
+}
 
+@Composable
+fun BrowserAlertDialog(
+    activity: Activity,
+    clipboard: ClipboardManager,
+    preferences: SharedPreferences,
+    customtabs: String,
+    customtabsIncognito: MutableState<Boolean>,
+    customtabsIncognitoExtra: String,
+    customtabsIncognitoSupported: Boolean,
+    defaultBrowser: String,
+    preferenceBrowser: String
+) {
     AlertDialog(onDismissRequest = {
         activity.finish()
     }, title = {
@@ -93,7 +124,7 @@ fun BrowserContent(preferences: SharedPreferences) {
                 component = ComponentName.unflattenFromString(
                     preferences.getString(preferenceBrowser, defaultBrowser)!!
                 )
-                // See L52
+                // See L96
                 data = activity.intent.data
                 putExtra(customtabs, session)
             }
@@ -108,7 +139,7 @@ fun BrowserContent(preferences: SharedPreferences) {
         }
     }, dismissButton = {
         TextButton(onClick = {
-            // See L52
+            // See L96
             val clip: ClipData =
                 ClipData.newPlainText(activity.intent.type, activity.intent.data!!.toString())
             clipboard.setPrimaryClip(clip)
@@ -117,5 +148,13 @@ fun BrowserContent(preferences: SharedPreferences) {
             Text(text = stringResource(id = R.string.copy))
         }
     })
+}
 
+@Composable
+fun BrowserNullActivityAlertDialog() {
+    AlertDialog(onDismissRequest = { },
+        confirmButton = { },
+        title = { Text(text = stringResource(id = R.string.error)) },
+        text = { Text(text = stringResource(id = R.string.error_null_activity)) }
+)
 }
