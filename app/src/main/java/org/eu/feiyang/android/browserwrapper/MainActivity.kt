@@ -24,10 +24,11 @@ import org.eu.feiyang.android.browserwrapper.ui.theme.BrowserWrapperTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         val preferences =
             getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
 
-        super.onCreate(savedInstanceState)
         setContent {
             BrowserWrapperTheme {
                 // A surface container using the 'background' color from the theme

@@ -22,10 +22,11 @@ import org.eu.feiyang.android.browserwrapper.util.findActivity
 
 class BrowserActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         val preferences =
             getSharedPreferences(getString(R.string.preferences), Context.MODE_PRIVATE)
 
-        super.onCreate(savedInstanceState)
         setContent {
             BrowserWrapperTheme {
                 Surface(
