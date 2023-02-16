@@ -16,4 +16,5 @@
     <string name="preference_browser" translatable="false">browser</string>
     <string name="preference_browser_default" translatable="false">com.android.chrome/com.google.android.apps.chrome.IntentDispatcher</string>
     <string name="preferences" translatable="false">preferences</string>
+    <string name="close_dialog_tip">Trigger back action or tap on the darkened area to close this dialog.</string>
 </resources>

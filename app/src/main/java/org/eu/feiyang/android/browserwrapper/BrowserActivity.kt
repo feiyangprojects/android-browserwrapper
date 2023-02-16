@@ -94,6 +94,7 @@ fun BrowserAlertDialog(
         Text(text = stringResource(id = R.string.open_it))
     }, text = {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text(text = stringResource(id = R.string.close_dialog_tip))
             // It's impossible to receive an intent with null data with current intent-filter configuration
             Text(text = activity.intent.data!!.toString())
             Row(
