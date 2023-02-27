@@ -1,7 +1,6 @@
 package org.eu.feiyang.android.browserwrapper
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -35,44 +34,40 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()
                 ) {
-                    MainContent(preferences = preferences)
+                    val browser = remember { mutableStateOf(false) }
+                    if (browser.value) {
+                        val preferenceBrowser = stringResource(id = R.string.preference_browser)
+                        val defaultBrowser =
+                            stringResource(id = R.string.preference_browser_default)
+                        val currentBrowser = rememberSaveable(stateSaver = TextFieldValue.Saver) {
+                            mutableStateOf(
+                                TextFieldValue(
+                                    preferences.getString(preferenceBrowser, defaultBrowser)!!
+                                )
+                            )
+                        }
+
+                        PreferenceAlertDialog(
+                            visible = browser,
+                            title = stringResource(id = R.string.set_browser),
+                            description = stringResource(id = R.string.set_browser_description),
+                            key = stringResource(id = R.string.preference_browser),
+                            value = currentBrowser,
+                            editor = preferences.edit()
+                        )
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        FilledTonalButton(onClick = { browser.value = true }) {
+                            Text(text = stringResource(id = R.string.set_browser))
+                        }
+                    }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun MainContent(preferences: SharedPreferences) {
-    val browser = remember { mutableStateOf(false) }
-    if (browser.value) {
-        val preferenceBrowser = stringResource(id = R.string.preference_browser)
-        val defaultBrowser = stringResource(id = R.string.preference_browser_default)
-        val currentBrowser = rememberSaveable(stateSaver = TextFieldValue.Saver) {
-            mutableStateOf(
-                TextFieldValue(
-                    preferences.getString(preferenceBrowser, defaultBrowser)!!
-                )
-            )
-        }
-
-        PreferenceAlertDialog(
-            visible = browser,
-            title = stringResource(id = R.string.set_browser),
-            description = stringResource(id = R.string.set_browser_description),
-            key = stringResource(id = R.string.preference_browser),
-            value = currentBrowser,
-            editor = preferences.edit()
-        )
-    }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        FilledTonalButton(onClick = { browser.value = true }) {
-            Text(text = stringResource(id = R.string.set_browser))
         }
     }
 }

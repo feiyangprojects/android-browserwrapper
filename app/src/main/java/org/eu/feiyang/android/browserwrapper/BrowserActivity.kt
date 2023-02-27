@@ -33,46 +33,44 @@ class BrowserActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background.copy(alpha = 0f),
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    BrowserContent(preferences = preferences)
+                    val activity = LocalContext.current.findActivity()
+                    val clipboard =
+                        LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+                    if (activity !== null) {
+                        val preferenceBrowser = stringResource(id = R.string.preference_browser)
+                        val defaultBrowser =
+                            stringResource(id = R.string.preference_browser_default)
+                        val currentBrowser =
+                            preferences.getString(preferenceBrowser, defaultBrowser)!!
+
+                        val customtabs = stringResource(id = R.string.intent_customtabs)
+                        val customtabsIncognito = remember { mutableStateOf(true) }
+                        val customtabsIncognitoExtra =
+                            stringResource(id = R.string.intent_customtabs_incognito)
+                        var customtabsIncognitoSupported = true
+                        if (!currentBrowser.endsWith(stringResource(id = R.string.intent_customtabs_incognito_suffix_chromium))) {
+                            customtabsIncognito.value = false
+                            customtabsIncognitoSupported = false
+                        }
+
+                        BrowserAlertDialog(
+                            activity = activity,
+                            clipboard = clipboard,
+                            preferences = preferences,
+                            customtabs = customtabs,
+                            customtabsIncognito = customtabsIncognito,
+                            customtabsIncognitoExtra = customtabsIncognitoExtra,
+                            customtabsIncognitoSupported = customtabsIncognitoSupported,
+                            defaultBrowser = defaultBrowser,
+                            preferenceBrowser = preferenceBrowser
+                        )
+                    } else {
+                        BrowserNullActivityAlertDialog()
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun BrowserContent(preferences: SharedPreferences) {
-    val activity = LocalContext.current.findActivity()
-    val clipboard =
-        LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-
-    if (activity !== null) {
-        val preferenceBrowser = stringResource(id = R.string.preference_browser)
-        val defaultBrowser = stringResource(id = R.string.preference_browser_default)
-        val currentBrowser = preferences.getString(preferenceBrowser, defaultBrowser)!!
-
-        val customtabs = stringResource(id = R.string.intent_customtabs)
-        val customtabsIncognito = remember { mutableStateOf(true) }
-        val customtabsIncognitoExtra = stringResource(id = R.string.intent_customtabs_incognito)
-        var customtabsIncognitoSupported = true
-        if (!currentBrowser.endsWith(stringResource(id = R.string.intent_customtabs_incognito_suffix_chromium))) {
-            customtabsIncognito.value = false
-            customtabsIncognitoSupported = false
-        }
-
-        BrowserAlertDialog(
-            activity = activity,
-            clipboard = clipboard,
-            preferences = preferences,
-            customtabs = customtabs,
-            customtabsIncognito = customtabsIncognito,
-            customtabsIncognitoExtra = customtabsIncognitoExtra,
-            customtabsIncognitoSupported = customtabsIncognitoSupported,
-            defaultBrowser = defaultBrowser,
-            preferenceBrowser = preferenceBrowser
-        )
-    } else {
-        BrowserNullActivityAlertDialog()
     }
 }
 
@@ -157,6 +155,5 @@ fun BrowserNullActivityAlertDialog() {
     AlertDialog(onDismissRequest = { },
         confirmButton = { },
         title = { Text(text = stringResource(id = R.string.error)) },
-        text = { Text(text = stringResource(id = R.string.error_null_activity)) }
-)
+        text = { Text(text = stringResource(id = R.string.error_null_activity)) })
 }
