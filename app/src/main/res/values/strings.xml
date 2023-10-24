@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Browser Wrapper</string>
+    <string name="browser">Browser</string>
+    <string name="browser_not_set">You haven\'t set a browser, choose one by tapping this card.</string>
+    <string name="browser_set_with_name">You have set browser to %1$s, setup is complete.</string>
+    <string name="choose_browser">Choose browser</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>
