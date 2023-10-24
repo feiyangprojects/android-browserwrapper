@@ -2,4 +2,10 @@
 <resources>
 
     <style name="Theme.BrowserWrapper" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.BrowserWrapperTransparent" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

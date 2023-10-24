@@ -6,4 +6,9 @@
     <string name="choose_browser">Choose browser</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="copy">Copy</string>
+    <string name="open">Open</string>
+    <string name="open_this_uri">Open this URI?</string>
+    <string name="open_with_incognito">Open with Incognito</string>
 </resources>
