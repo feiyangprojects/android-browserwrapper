@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import org.eu.feiyang.android.browserwrapper.internal.Constants
+import org.eu.feiyang.android.browserwrapper.internal.Utilities
 import org.eu.feiyang.android.browserwrapper.ui.theme.BrowserWrapperTheme
 
 class BrowserActivity : ComponentActivity() {

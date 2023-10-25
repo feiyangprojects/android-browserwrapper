@@ -36,6 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import org.eu.feiyang.android.browserwrapper.internal.Constants
+import org.eu.feiyang.android.browserwrapper.internal.Utilities
 import org.eu.feiyang.android.browserwrapper.ui.theme.BrowserWrapperTheme
 
 class MainActivity : ComponentActivity() {

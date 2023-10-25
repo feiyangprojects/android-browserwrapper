@@ -1,4 +1,4 @@
-package org.eu.feiyang.android.browserwrapper
+package org.eu.feiyang.android.browserwrapper.internal
 
 import android.content.ComponentName
 import android.content.Intent
