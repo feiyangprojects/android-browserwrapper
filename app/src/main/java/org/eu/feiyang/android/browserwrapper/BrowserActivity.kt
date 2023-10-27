@@ -42,6 +42,11 @@ class BrowserActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Ignore explicit launch without uri data
+        if (intent.data == null) {
+            finish()
+        }
+
         val preferences = getSharedPreferences(Constants.Preferences.NAME, Context.MODE_PRIVATE)
         val clipboardManager =
             getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
