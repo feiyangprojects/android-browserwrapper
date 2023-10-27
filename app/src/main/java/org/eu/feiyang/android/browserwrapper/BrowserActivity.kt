@@ -146,8 +146,8 @@ fun BrowserDialog(
                     }) {
                         Text(text = stringResource(id = R.string.copy))
                     }
-                    TextButton(onClick = {
-                        if (browser != null) {
+                    if (browser != null) {
+                        TextButton(onClick = {
                             val intent = Utilities.Intent.newCustomTabIntent(
                                 browser = browser,
                                 uri = activity.intent.data!!,
@@ -155,9 +155,9 @@ fun BrowserDialog(
                             )
                             activity.startActivity(intent)
                             activity.finish()
+                        }) {
+                            Text(text = stringResource(id = R.string.open))
                         }
-                    }, enabled = (browser != null)) {
-                        Text(text = stringResource(id = R.string.open))
                     }
                 }
             }
